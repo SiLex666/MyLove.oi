@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Для моей любимой ✨</title>
+    <link href="https://fonts.googleapis.com/css2?family=Pacifico&family=Comfortaa:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #ffafbd;
+            --secondary-color: #ffc3a0;
+        }
+
+        body {
+            margin: 0; padding: 0;
+            font-family: 'Comfortaa', cursive;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            min-height: 100vh;
+            display: flex; justify-content: center; align-items: center;
+            overflow: hidden; color: white; text-align: center;
+        }
+
+        #hearts-container {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            z-index: 1; pointer-events: none;
+        }
+
+        .card {
+            background: rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
+            padding: 40px 20px;
+            border-radius: 30px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            border: 1px solid rgba(255,255,255,0.3);
+            width: 90%; max-width: 400px;
+            position: relative; z-index: 10;
+        }
+
+        .step { display: none; }
+        .step.active { display: block; animation: fadeIn 0.5s ease; }
+
+        h1 { font-family: 'Pacifico', cursive; font-size: 1.8rem; margin-bottom: 20px; }
+        
+        img.main-img {
+            width: 100%; max-width: 250px;
+            border-radius: 20px; border: 5px solid white;
+            margin-bottom: 20px;
+            object-fit: cover;
+        }
+
+        button {
+            background: white; color: #ff6b6b; border: none;
+            padding: 15px 25px; margin: 8px; border-radius: 50px;
+            font-weight: bold; cursor: pointer; transition: 0.3s;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            position: relative; z-index: 20;
+        }
+
+        button:hover { transform: scale(1.1); }
+
+        .error { color: #b33939; font-weight: bold; display: none; margin-top: 10px; font-size: 0.9rem; }
+
+        .gallery {
+            display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 20px;
+        }
+        .gallery img { 
+            width: 100%; height: 120px; 
+            object-fit: cover; border-radius: 12px; border: 2px solid white; 
+        }
+
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        
+        .heart-particle { position: absolute; animation: float linear infinite; }
+        @keyframes float {
+            0% { transform: translateY(110vh); opacity: 1; }
+            100% { transform: translateY(-20vh); opacity: 0; }
+        }
+    </style>
+</head>
+<body>
+
+<div id="hearts-container"></div>
+
+<div class="card">
+    <div id="step1" class="step active">
+        <h1>Я тебя люблю, мое солнышко! ❤️</h1>
+        <button onclick="goToStep(2)">Тык</button>
+    </div>
+
+    <div id="step2" class="step">
+        <img src="1.jpg" class="main-img" alt="Это твой мальчик">
+        <h1>Это твой мальчик?</h1>
+        <button onclick="goToStep(3)">Да</button>
+        <button id="noBtn" onmouseover="moveButton()">Нет</button>
+        <p id="err2" class="error">Эй, ну это твой милашик)</p>
+    </div>
+
+    <div id="step3" class="step">
+        <h1>Когда мы начали встречаться?</h1>
+        <button onclick="showErr(3)">28.06</button>
+        <button onclick="goToStep(4)">28.07</button>
+        <button onclick="showErr(3)">28.08</button>
+        <p id="err3" class="error">Вспоминай❤️</p>
+    </div>
+
+    <div id="step4" class="step">
+        <h1>Где мы впервые поцеловались?</h1>
+        <button onclick="showErr(4)">У соснового бора</button>
+        <button onclick="showErr(4)">На комсомольской</button>
+        <button onclick="goToStep(5)">У Геологова</button>
+        <p id="err4" class="error">Хых, заново давай❤️🥰</p>
+    </div>
+
+    <div id="step5" class="step">
+        <h1>Ты лучшая в мире! 🌸</h1>
+        <div class="gallery">
+            <img src="2.jpg">
+            <img src="3.jpg">
+            <img src="4.jpg">
+            <img src="5.jpg">
+        </div>
+        <p style="margin-top:20px; font-family: 'Pacifico';">Твой любимый...</p>
+    </div>
+</div>
+
+<script>
+    function goToStep(num) {
+        document.querySelectorAll('.step').forEach(s => s.classList.remove('active'));
+        document.getElementById('step' + num).classList.add('active');
+        if(num === 5) for(let i=0; i<40; i++) setTimeout(createHeart, i*100);
+    }
+
+    function showErr(id) {
+        const e = document.getElementById('err' + id);
+        e.style.display = 'block';
+        setTimeout(() => e.style.display = 'none', 2000);
+    }
+
+    function moveButton() {
+        const btn = document.getElementById('noBtn');
+        btn.style.position = 'absolute';
+        btn.style.left = Math.random() * 70 + '%';
+        btn.style.top = Math.random() * 70 + '%';
+        document.getElementById('err2').style.display = 'block';
+    }
+
+    function createHeart() {
+        const container = document.getElementById('hearts-container');
+        const h = document.createElement('div');
+        h.className = 'heart-particle';
+        h.innerText = ['❤️','💖','💕','✨','🌸'][Math.floor(Math.random()*5)];
+        h.style.left = Math.random() * 100 + 'vw';
+        h.style.fontSize = Math.random() * 20 + 15 + 'px';
+        h.style.animationDuration = Math.random() * 3 + 2 + 's';
+        container.appendChild(h);
+        setTimeout(() => h.remove(), 5000);
+    }
+    setInterval(createHeart, 400);
+</script>
+
+</body>
+</html>
